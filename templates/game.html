@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>게임 추천하기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <style>
+    .game-img {
+      max-width: 100%;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body class="has-background-light">
+
+  <!-- Hero Header -->
+  <section class="hero is-info">
+    <div class="hero-body">
+      <p class="title">랜덤 게임 추천</p>
+      <p class="subtitle">버튼을 눌러 오늘의 게임을 확인하세요</p>
+    </div>
+  </section>
+
+  <!-- Main -->
+  <section class="section">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">오늘은 어떤 게임?</p>
+            </header>
+
+            <div class="card-content">
+              <div class="buttons">
+                <button class="button is-primary" onclick="getRandomGame()">
+                  게임 추천
+                </button>
+              </div>
+
+              <div class="content">
+                <p id="result" class="is-size-6">선택된 게임이 여기에 표시됩니다.</p>
+                <figure class="image is-3by2">
+                  <img id="game" class="game-img" src="" alt="게임 이미지">
+                </figure>
+              </div>
+            </div>
+
+            <footer class="card-footer">
+              <span class="card-footer-item has-text-grey is-size-7">
+                i.imgur.com 이미지를 Flask 프록시로 중계합니다
+              </span>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    async function getRandomGame() {
+      try {
+        const response = await fetch("/randomgame");
+        const data = await response.json();
+
+        // 게임 이름 텍스트 표시
+        document.getElementById("result").textContent = `선택된 게임: ${data.name}`;
+
+        // 프록시로 이미지 요청
+        document.getElementById("game").src = `/img?url=${encodeURIComponent(data.image)}`;
+      } catch (error) {
+        console.error("Error fetching random game:", error);
+      }
+    }
+  </script>
+</body>
+</html>
