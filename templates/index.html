@@ -1,113 +1,79 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="apple-touch-icon" sizes="180x180" href="image/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="image/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="image/favicon-16x16.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
-          rel="stylesheet">
-
-    <style>
-        * {
-          font-family: "Ubuntu", sans-serif;
-          font-weight: 300;
-          font-style: normal;
-        }
-
-        .blue{
-        color: blue;
-        }
-
-        .sign-in{
-        color: white;
-        background-image: url('https://omghcontent.affino.com/AcuCustom/Sitename/DAM/235/SINGLE_USE_AI_BING.jpg');
-        width: 300px;
-        height: 200px;
-
-        background-position: center;
-        background-size: cover;
-
-        text-align: center;
-        padding-top: 60px;
-
-        }
-
-        .wrap{
-        margin:10px auto;
-        width: 300px;
-        }
-
-
-    </style>
-    <title>Sign In</title>
+  <meta charset="UTF-8" />
+  <title>게임 추천하기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <style>
+    .game-img {
+      max-width: 100%;
+      border-radius: 12px;
+    }
+  </style>
 </head>
+<body class="has-background-light">
 
-<body>
-
-<div class="wrap">
-    <div class="sign-in">
-        <h1>Sign In</h1>
+  <!-- Hero Header -->
+  <section class="hero is-info">
+    <div class="hero-body">
+      <p class="title">랜덤 게임 추천</p>
+      <p class="subtitle">버튼을 눌러 오늘의 게임을 확인하세요</p>
     </div>
+  </section>
 
-    <div class="blue">
-        <p>
-            ID: <input type="text"/>
-        </p>
-        <p>
-            PW: <input type="password"/>
-        </p>
+  <!-- Main -->
+  <section class="section">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">오늘은 어떤 게임?</p>
+            </header>
+
+            <div class="card-content">
+              <div class="buttons">
+                <button class="button is-primary" onclick="getRandomGame()">
+                  게임 추천
+                </button>
+              </div>
+
+              <div class="content">
+                <p id="result" class="is-size-6">선택된 게임이 여기에 표시됩니다.</p>
+                <figure class="image is-3by2">
+                  <img id="game" class="game-img" src="" alt="게임 이미지">
+                </figure>
+              </div>
+            </div>
+
+            <footer class="card-footer">
+              <span class="card-footer-item has-text-grey is-size-7">
+                i.imgur.com 이미지를 Flask 프록시로 중계합니다
+              </span>
+            </footer>
+          </div>
+        </div>
+      </div>
     </div>
-    <button>Sign In</button>
-</div>
+  </section>
 
-<img src="{{ url_for('static', filename='Banana.jpeg') }}">
-
-<button onclick="getCatImage()">고양이 이미지 가져오기</button>
-<button onclick="getDogImage()">개 이미지 가져오기</button>
-<button onclick="getRandomImage()">오리 이미지 가져오기</button>
-<button onclick="getFoxImage()">폭스 이미지 ㅈ가져오기</button>
-
-<img id="cat" src="">
-<img id="dog" src="">
-<img id="avata" src="">
-<img id="duck" src="">
-
-<img id="cat" src="https://api.thecatapi.com/v1/images/search">
-<img id="dog" src="https://api.thecatapi.com/v1/images/search">
-<img id="duck" src="https://random-d.uk/api/random">
-
-
-<script>
-    async function getCatImage() {
+  <script>
+    async function getRandomGame() {
       try {
-        const response = await fetch("http://127.0.0.1:5002/cat");
+        const response = await fetch("/randomgame");
         const data = await response.json();
-        console.log(data)
-        document.getElementById("cat").src = data.image;
+
+        // 게임 이름 텍스트 표시
+        document.getElementById("result").textContent = `선택된 게임: ${data.name}`;
+
+        // 프록시로 이미지 요청
+        document.getElementById("game").src = `/img?url=${encodeURIComponent(data.image)}`;
       } catch (error) {
-        console.error("Error fetching cat image:", error);
+        console.error("Error fetching random game:", error);
       }
     }
-
-
-
-    async function getDogImage() {
-      try {
-        const response = await fetch("http://127.0.0.1:5002/dog");
-        const data = await response.json()
-
-        document.getElementById("dog").src = data.image;
-      } catch (error) {
-        console.error("Error fetching dog image:", error);
-      }
-    }
-</script>
-
+  </script>
 </body>
-
 </html>

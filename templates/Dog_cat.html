@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="image/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="image/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="image/favicon-16x16.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+          rel="stylesheet">
+
+    <style>
+        * {
+          font-family: "Ubuntu", sans-serif;
+          font-weight: 300;
+          font-style: normal;
+        }
+
+        .blue{
+        color: blue;
+        }
+
+        .sign-in{
+        color: white;
+        background-image: url('https://omghcontent.affino.com/AcuCustom/Sitename/DAM/235/SINGLE_USE_AI_BING.jpg');
+        width: 300px;
+        height: 200px;
+
+        background-position: center;
+        background-size: cover;
+
+        text-align: center;
+        padding-top: 60px;
+
+        }
+
+        .wrap{
+        margin:10px auto;
+        width: 300px;
+        }
+
+
+    </style>
+    <title>Sign In</title>
+</head>
+
+<body>
+
+<div class="wrap">
+    <div class="sign-in">
+        <h1>Sign In</h1>
+    </div>
+
+    <div class="blue">
+        <p>
+            ID: <input type="text"/>
+        </p>
+        <p>
+            PW: <input type="password"/>
+        </p>
+    </div>
+    <button>Sign In</button>
+</div>
+
+<img src="{{ url_for('static', filename='Banana.jpeg') }}">
+
+<button onclick="getCatImage()">고양이 이미지 가져오기</button>
+<button onclick="getDogImage()">개 이미지 가져오기</button>
+<button onclick="getRandomImage()">오리 이미지 가져오기</button>
+<button onclick="getFoxImage()">폭스 이미지 ㅈ가져오기</button>
+
+<img id="cat" src="">
+<img id="dog" src="">
+<img id="avata" src="">
+<img id="duck" src="">
+
+<img id="cat" src="https://api.thecatapi.com/v1/images/search">
+<img id="dog" src="https://api.thecatapi.com/v1/images/search">
+<img id="duck" src="https://random-d.uk/api/random">
+
+
+<script>
+    async function getCatImage() {
+      try {
+        const response = await fetch("http://127.0.0.1:5002/cat");
+        const data = await response.json();
+        console.log(data)
+        document.getElementById("cat").src = data.image;
+      } catch (error) {
+        console.error("Error fetching cat image:", error);
+      }
+    }
+
+
+
+    async function getDogImage() {
+      try {
+        const response = await fetch("http://127.0.0.1:5002/dog");
+        const data = await response.json()
+
+        document.getElementById("dog").src = data.image;
+      } catch (error) {
+        console.error("Error fetching dog image:", error);
+      }
+    }
+</script>
+
+</body>
+
+</html>
