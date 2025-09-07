@@ -15,7 +15,7 @@ games = [
 
 @app.route("/")
 def home():
-    return render_template("game.html")
+    return render_template("index.html")
 
 @app.route("/randomgame")
 def random_game():
